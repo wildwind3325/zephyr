@@ -21,13 +21,12 @@ class FeishuService {
         let response = await http.request({
           method: 'POST',
           url: 'https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal',
-          body: {
+          data: {
             app_id: this.app_id,
             app_secret: this.app_secret
-          },
-          json: true
+          }
         });
-        let data = response.body;
+        let data = response.data;
         if (data.code !== 0) {
           return data;
         }
@@ -58,13 +57,12 @@ class FeishuService {
         headers: {
           Authorization: 'Bearer ' + this.app_access_token
         },
-        body: {
+        data: {
           grant_type: 'authorization_code',
           code: code
-        },
-        json: true
+        }
       });
-      let data = response.body;
+      let data = response.data;
       return data;
     } catch (error) {
       return {
@@ -85,10 +83,9 @@ class FeishuService {
         url: 'https://open.feishu.cn/open-apis/contact/v3/users/' + user_id + '?user_id_type=user_id',
         headers: {
           Authorization: 'Bearer ' + this.app_access_token
-        },
-        json: true
+        }
       });
-      let data = response.body;
+      let data = response.data;
       if (data.code !== 0) {
         return data;
       }
@@ -116,12 +113,11 @@ class FeishuService {
         headers: {
           Authorization: 'Bearer ' + this.app_access_token
         },
-        body: {
+        data: {
           emails: [email]
-        },
-        json: true
+        }
       });
-      let data = response.body;
+      let data = response.data;
       if (data.code !== 0) {
         return data;
       }
@@ -149,14 +145,13 @@ class FeishuService {
         headers: {
           Authorization: 'Bearer ' + this.app_access_token
         },
-        body: {
+        data: {
           receive_id: user_id,
           content: JSON.stringify(content),
           msg_type: msg_type
-        },
-        json: true
+        }
       });
-      let data = response.body;
+      let data = response.data;
       return data;
     } catch (error) {
       return {

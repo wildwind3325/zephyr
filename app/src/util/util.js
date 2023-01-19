@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+var path = require('path');
 
 const aes_key = '754a5bdc7468bb1f', iv = '370284027734754a';
 
@@ -36,7 +37,6 @@ var util = {
     return crypto.randomBytes(len).toString('hex').substring(0, len);
   },
   getPath(val) {
-    var path = require('path');
     let dir = path.join(__dirname, '../');
     return val.substring(dir.length, val.lastIndexOf('.')).replace(/[\\/]/g, '.');
   }

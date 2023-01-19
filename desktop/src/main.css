@@ -1,0 +1,29 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.div-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar {
+  display: flex;
+  height: 40px;
+}
+
+.toolbar-function {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.toolbar-search {
+  display: flex;
+  align-items: center;
+}

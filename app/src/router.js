@@ -12,7 +12,7 @@ var logger = log4js.getLogger();
 
 router.post('/login', async function (req, res, next) {
   try {
-    switch (req.query.action) {
+    switch (req.query._action) {
       case 'login':
         if (!feishuService.app_id) {
           let app_id = config.app_id;

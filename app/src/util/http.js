@@ -14,7 +14,7 @@ var http = {
       worker(options).then(function (response) {
         resolve(response);
       }).catch(function (error) {
-        resolve(error.response, error);
+        reject(error);
       });
     });
   }
