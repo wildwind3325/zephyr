@@ -1,16 +1,13 @@
 <template>
   <div style="padding: 20px; font-size: 14px;">
-    您已退出系统，<span class="link" @click="$router.push('/')">点此</span>继续。
+    <p>您已退出系统，<span class="link" @click="$router.push('/')">点此</span>继续。</p>
+    <p>You've logged out, click <span class="link" @click="$router.push('/')">here</span> to continue.</p>
   </div>
 </template>
 
 <script>
-import { logout } from '../api/login';
 export default {
-  name: 'Logout',
-  async mounted() {
-    try { await logout(); } catch (err) { }
-  }
+  name: 'Logout'
 };
 </script>
 

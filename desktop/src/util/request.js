@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import router from '../router/index';
 
-const request = axios.create({ timeout: 10000 });
+const request = axios.create({ timeout: 5000 });
 
 request.interceptors.request.use(function (config) {
   if (config.headers.Spin !== 'false') window.$spin.show();
@@ -14,7 +14,7 @@ request.interceptors.request.use(function (config) {
 
 request.interceptors.response.use(function (response) {
   window.$spin.hide();
-  if (response.data.code < 0 && router.currentRoute.path !== '/') {
+  if (response.data.code < 0 && router.currentRoute.value.fullPath !== '/') {
     localStorage.setItem('target_uri', router.currentRoute.value.fullPath);
     router.replace('/');
   }

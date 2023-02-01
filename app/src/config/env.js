@@ -2,8 +2,9 @@ var log4js = require('log4js');
 var Sequelize = require('sequelize');
 
 var cm = require('../dao/cm');
+var securityService = require('../service/security');
 
-var init = () => {
+var init = async () => {
   if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'DEV';
   }
@@ -19,6 +20,8 @@ var init = () => {
     }
     cm.set(key, conn);
   }
+
+  await securityService.init();
 };
 
 module.exports = { init: init };
