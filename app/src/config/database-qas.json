@@ -4,7 +4,7 @@
     "port": 3306,
     "username": "admin",
     "password": "admin",
-    "database": "breeze",
+    "database": "zephyr",
     "dialect": "mysql",
     "timezone": "+08:00",
     "pool": {
