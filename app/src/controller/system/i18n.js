@@ -97,7 +97,10 @@ class I18nController {
     let zh_buf = Buffer.from('export default ' + JSON.stringify(zh) + ';', 'utf-8');
     zf.addBuffer(en_buf, 'en.js');
     zf.addBuffer(zh_buf, 'zh.js');
-    res.writeHead(200, [['Content-Type', 'application/zip'], ['Content-Disposition', 'attachment; filename=i18n.zip']]);
+    res.status(200).set({
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'attachment; filename=i18n.zip'
+    });
     zf.outputStream.pipe(res);
     zf.end();
   }

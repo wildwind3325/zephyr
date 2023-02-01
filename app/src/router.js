@@ -60,10 +60,12 @@ router.get('/download', async function (req, res, next) {
     }
   } catch (err) {
     logger.error(err.message, err);
-    res.send({
-      code: 1,
-      msg: 'system.msg.exception'
+    let str = 'Download failed: ' + err.message;
+    res.status(200).set({
+      'Content-Type': 'text/plain',
+      'Content-Disposition': 'attachment; filename=error.txt'
     });
+    res.end(Buffer.from(str, 'utf-8'));
   }
 });
 
