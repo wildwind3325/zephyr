@@ -115,22 +115,22 @@ export default {
     selectMenu(val) {
       for (let i = 0; i < this.tags.length; i++) {
         if (val === this.tags[i].path) {
-          this.$router.push(val);
+          this.$router.replace(val);
           return;
         }
       }
-      this.$router.push(val);
+      this.$router.replace(val);
     },
     async logout() {
       try { await logout(); } catch (err) { }
       this.$router.replace('/logout');
     },
     navi(item) {
-      this.$router.push(item.path);
+      this.$router.replace(item.path);
     },
     close(item, index) {
       if (item.path === this.path) {
-        this.$router.push(this.tags[index - 1].path);
+        this.$router.replace(this.tags[index - 1].path);
       }
       this.tags.splice(index, 1);
     }
