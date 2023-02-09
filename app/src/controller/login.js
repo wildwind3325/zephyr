@@ -66,16 +66,38 @@ class LoginController {
     } else {
       let db = new DB();
       let list = await db.find('select * from `view_base_user` where `email` = :email', { email: result.data.email });
+      let user;
       if (list.length === 0) {
+        user = {
+          code: result.data.employee_no || '',
+          name: result.data.name,
+          email: result.data.email,
+          mobile: result.data.mobile || '',
+          department_id: 1,
+          station_id: 6,
+          roles: '[7]',
+          status: 0,
+          is_admin: 0,
+          memo: '',
+          created_by: 'Feishu',
+          updated_by: 'Feishu'
+        };
+        user.account = user.email.substring(0, user.email.indexOf('@'));
+        user.password = util.md5('111111' + user.account);
+        await db.insert('base_user', user);
+        user = await db.findById('view_base_user', user.id);
+      } else {
+        user = list[0];
+      }
+      user.department_name = user.department_name || '';
+      user.station_name = user.station_name || '';
+      user.roles = JSON.parse(user.roles);
+      if (user.status !== 0) {
         res.send({
           code: 1,
           msg: 'system.login.userNotFound'
         });
       } else {
-        let user = list[0];
-        user.department_name = user.department_name || '';
-        user.station_name = user.station_name || '';
-        user.roles = JSON.parse(user.roles);
         let token = jwt.sign(user, config.secret, { expiresIn: '7d' });
         res.cookie(config.cookie_name, token, {
           maxAge: 1000 * 3600 * 24 * 7,

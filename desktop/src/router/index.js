@@ -4,6 +4,7 @@ import Master from '../views/Master.vue';
 import Home from '../views/Home.vue';
 import Logout from '../views/Logout.vue';
 import NotFound from '../views/NotFound.vue';
+import Calendar from '../views/Calendar.vue';
 
 const routes = [{
   path: '/',
@@ -53,6 +54,10 @@ const routes = [{
     path: '/system/log',
     name: 'Log',
     component: () => import('../views/system/Log.vue')
+  }, {
+    path: '/calendar',
+    name: 'Calendar',
+    component: Calendar
   }]
 }, {
   path: '/logout',

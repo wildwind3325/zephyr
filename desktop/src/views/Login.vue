@@ -53,7 +53,7 @@ export default {
           localStorage.removeItem('target_uri');
           this.$router.replace(target);
         } else if (res.data.data.app_id) {
-          let url = 'https://open.feishu.cn/open-apis/authen/v1/index?app_id=' + res.data.data.feishu_app_id + '&redirect_uri=' + encodeURIComponent(location.origin + location.pathname + '#/');
+          let url = 'https://open.feishu.cn/open-apis/authen/v1/index?app_id=' + res.data.data.app_id + '&redirect_uri=' + encodeURIComponent(location.origin + location.pathname + '#/');
           location.href = url;
         }
       }
