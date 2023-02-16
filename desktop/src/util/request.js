@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import router from '../router/index';
 
-const request = axios.create({ timeout: 5000 });
+const request = axios.create({ timeout: 15000 });
 
 request.interceptors.request.use(function (config) {
   if (config.headers.Spin !== 'false') window.$spin.show();

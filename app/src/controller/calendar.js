@@ -41,10 +41,10 @@ class CalendarController {
 
   async add(req, res, data) {
     let db = new DB();
-    let url = 'http://172.16.1.241/redmine/time_entries.json?from=2018-01-01&to=2023-01-03&offset=';
+    let url = 'http://172.16.1.241/redmine/time_entries.json?from=' + data.from + '&to=' + data.to + '&offset=';
     let authorization = 'Basic emhhbmdqdW4wMTo0NTYxMjNhYmM=';
     let offset = 0;
-    let projects = {}, devs = {}, tsts = {}, bugs = {};
+    let projects = {}, devs = {}, tsts = {}, bugs = {}, times = {};
     while (true) {
       let res = await http.request({
         method: 'GET',
@@ -65,6 +65,11 @@ class CalendarController {
         });
         let issue = issue_data.data.issue;
         projects[issue.project.id + ''] = issue.project.name;
+        if (times[issue.id + '']) {
+          times[issue.id + ''] += entry.hours;
+        } else {
+          times[issue.id + ''] = entry.hours;
+        }
         if (issue.tracker.id === 1) {
           if (devs[issue.id + '']) {
             devs[issue.id + ''].cost += entry.hours;
@@ -92,14 +97,47 @@ class CalendarController {
       offset += 25;
     }
     let content = '';
-    for (let key in devs) {
-      content += JSON.stringify(devs[key]) + '\r\n';
-    }
-    for (let key in tsts) {
-      content += JSON.stringify(tsts[key]) + '\r\n';
-    }
-    for (let key in bugs) {
-      content += JSON.stringify(bugs[key]) + '\r\n';
+    for (let pid in projects) {
+      content += '### [' + projects[pid] + ']\r\n';
+      pid = parseInt(pid);
+      content += '#### 开发工作\r\n';
+      content += '|近期工作内容|负责人|进度|耗时|备注|\r\n';
+      content += '|-|-|-|-|-|\r\n';
+      for (let iid in devs) {
+        if (devs[iid].project.id !== pid) continue;
+        let issue = devs[iid];
+        let subject = issue.subject;
+        let person = issue.assigned_to ? issue.assigned_to.name : '';
+        let progress = issue.done_ratio + '%';
+        let cost = times[iid] + ' (' + issue.cost + ')';
+        content += '|' + subject + '|' + person + '|' + progress + '|' + cost + '||\r\n';
+        delete devs[iid];
+      }
+      content += '#### 测试工作\r\n';
+      content += '|近期工作内容|负责人|进度|耗时|备注|\r\n';
+      content += '|-|-|-|-|-|\r\n';
+      for (let iid in tsts) {
+        if (tsts[iid].project.id !== pid) continue;
+        let issue = tsts[iid];
+        let subject = issue.subject;
+        let person = issue.author ? issue.author.name : '';
+        let progress = issue.done_ratio + '%';
+        let cost = times[iid] + ' (' + issue.cost + ')';
+        content += '|' + subject + '|' + person + '|' + progress + '|' + cost + '||\r\n';
+        delete tsts[iid];
+      }
+      content += '#### 缺陷清单\r\n';
+      content += '|问题描述|创建人|状态|备注|\r\n';
+      content += '|-|-|-|-|\r\n';
+      for (let iid in bugs) {
+        if (bugs[iid].project.id !== pid) continue;
+        let issue = bugs[iid];
+        let subject = issue.subject;
+        let person = issue.author ? issue.author.name : '';
+        let status = issue.status.name;
+        content += '|' + subject + '|' + person + '|' + status + '||\r\n';
+        delete bugs[iid];
+      }
     }
     let item = {
       from: data.from,
