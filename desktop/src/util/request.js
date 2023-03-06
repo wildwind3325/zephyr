@@ -6,6 +6,9 @@ const request = axios.create({ timeout: 15000 });
 
 request.interceptors.request.use(function (config) {
   if (config.headers.Spin !== 'false') window.$spin.show();
+  if (config.url.startsWith('/')) {
+    config.url = config.url.substring(1);
+  }
   return config;
 }, function (error) {
   window.$spin.hide();
