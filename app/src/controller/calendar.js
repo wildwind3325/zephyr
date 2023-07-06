@@ -41,7 +41,7 @@ class CalendarController {
 
   async add(req, res, data) {
     let db = new DB();
-    let url = 'http://172.16.1.241/redmine/time_entries.json?from=' + data.from + '&to=' + data.to + '&offset=';
+    let url = 'http://172.16.0.169/redmine/time_entries.json?from=' + data.from + '&to=' + data.to + '&offset=';
     let authorization = 'Basic emhhbmdqdW4wMTo0NTYxMjNhYmM=';
     let offset = 0;
     let projects = {}, devs = {}, tsts = {}, bugs = {}, times = {};
@@ -58,7 +58,7 @@ class CalendarController {
         let entry = list[i];
         let issue_data = await http.request({
           method: 'GET',
-          url: 'http://172.16.1.241/redmine/issues/' + entry.issue.id + '.json',
+          url: 'http://172.16.0.169/redmine/issues/' + entry.issue.id + '.json',
           headers: {
             'Authorization': authorization
           }
